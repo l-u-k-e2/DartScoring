@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="30dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:stretchColumns="0"
+            android:id="@+id/tableLayout" >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_player_text"
+                    android:id="@+id/textView"
+                    android:textStyle="bold"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_points_text"
+                    android:id="@+id/textView3"
+                    android:layout_gravity="right"
+                    android:textStyle="bold"
+                    android:textSize="20dp" />
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView" >
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="4dp"
+
+                android:alignmentMode="alignBounds"
+                android:columnCount="3"
+                android:rowOrderPreserved="false"
+                android:useDefaultMargins="true"
+                android:id="@+id/gridLayout"
+                >
+            </GridLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.3"
+        android:layout_marginTop="20dp">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="3"
+            android:layout_margin="2dp">
+
+            <Button
+                android:layout_columnWeight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:text="0"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:id="@+id/current_score_button"
+                android:textSize="30dp" />
+
+            <Button
+                android:layout_columnWeight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:text="X"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/cancel_score"
+                android:textSize="30dp" />
+
+            <Button
+                android:layout_columnWeight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:text="OK"
+                android:layout_column="2"
+                android:gravity="center"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/score_ok_button"
+                android:textSize="30dp" />
+        </GridLayout>
+    </RelativeLayout>
+
+</LinearLayout>

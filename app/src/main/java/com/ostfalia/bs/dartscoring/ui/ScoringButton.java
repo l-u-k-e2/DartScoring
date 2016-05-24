@@ -26,11 +26,18 @@ public class ScoringButton extends Button implements View.OnClickListener {
         this.setTextSize(30);
     }
 
+    /**
+     * Konfiguration für den GridView in den die Buttons hinzugefügt werden sollen
+     */
     public void setColumnSpec(){
         ((GridLayout.LayoutParams)this.getLayoutParams()).columnSpec = GridLayout.spec(GridLayout.UNDEFINED,1f);
         ((GridLayout.LayoutParams)this.getLayoutParams()).setGravity(Gravity.FILL_HORIZONTAL);
     }
 
+    /**
+     * Listener der im scoringFragment die addScore-Methode aufruft
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         scoringFragment.addScore(Integer.valueOf(this.getText().toString()));

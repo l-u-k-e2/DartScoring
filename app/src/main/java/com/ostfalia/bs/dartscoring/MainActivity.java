@@ -49,31 +49,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
+        //Zugriff auf DB
         userDbHelper = new UserDbHelper(getApplicationContext());
+        //Initialisierung der Fragmente
         userchoiceFragment = new UserchoiceFragment();
         scoringFragment = new ScoringFragment();
-
+        //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //Links oben in Toolbar
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menue);
         ab.setDisplayHomeAsUpEnabled(true);
-
+        //Layoutcontainer mit navigationview
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         //NavigagtionView (Menü von links)
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
-
-        //ViewPager (Tabs oben)
+        //ViewPager (Tabs oben) bzw. ermöglicht scrollen zwischen Fragment
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            /**
+             * Wenn eine neue Seite im ViewPager geöffnet wird, wird eine Neue Tabelle im scoringFragment aufgebaut
+             * --> ein neues Spiel beginnt
+             * @param position
+             */
             @Override
             public void onPageSelected(int position) {
                 //Update UserChoiceFragment
@@ -83,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {}
         });
         if (viewPager != null) {
+            //Erstellt den ViewPager
             setupViewPager(viewPager);
         }
-
+        //Anzeige der Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
         //Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //UserCreate Dialog
+    /**
+     * Erstellt den Dialog zum Erstellen eines Users
+     * @return
+     */
     public Dialog createDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -131,13 +138,6 @@ public class MainActivity extends AppCompatActivity {
         return b.create();
     }
 
-//    //Menü rechts oben
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.sample_actions, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -160,7 +160,10 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    //View Pager konfigurieren
+    /**
+     * ViewPager konfigurieren
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(userchoiceFragment, "UserChoice");
@@ -168,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    //Adapter
+    /**
+     * Für ViewPager
+     */
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
@@ -197,6 +202,5 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitles.get(position);
         }
     }
-
 
 }

@@ -53,17 +53,17 @@ public class UserStatisticActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
+        //Zugriff auf DB
         userDbHelper = new UserDbHelper(getApplicationContext());
-
+        //Zugriff auf Daten, die beim Click dem Intent übergeben wurden
         Intent intent = getIntent();
         username = intent.getStringExtra(EXTRA_NAME);
         id = intent.getLongExtra(USER_ID, 0l);
-
+        //ToolbarLayout
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(username);
-
+        //FAB für editieren des Users
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_detail);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +71,15 @@ public class UserStatisticActivity extends AppCompatActivity {
                 createDialog().show();
             }
         });
-
     }
 
+    /**
+     * Nachdem die Aktivität erstellt wurde, werden die Statistiken des Users berechnet und die Anzeige befüllt
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         //StatistikInfo
         TextView tVvorname = (TextView) findViewById(R.id.textView10);
         tVvorname.setText(userDbHelper.getUser(id).getVorname());
@@ -85,15 +87,12 @@ public class UserStatisticActivity extends AppCompatActivity {
         tVnachname.setText(userDbHelper.getUser(id).getNachname());
         TextView tValias = (TextView) findViewById(R.id.textView12);
         tValias.setText(userDbHelper.getUser(id).getAlias());
-
         //Statistik
         statisticTwenty = (TextView)findViewById(R.id.text_statistic_20);
         statisticFourty = (TextView)findViewById(R.id.text_statistic_40);
         statisticSixty = (TextView)findViewById(R.id.text_statistic_60);
-
         //Statistik berechnen
         fillStatistic(userDbHelper.getUser(id));
-
         //BarChart
         barChart = (BarChart)findViewById(R.id.chart);
         createBarChart();
@@ -105,6 +104,14 @@ public class UserStatisticActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Berechnet die Statistik des Users für:
+     * Trefferquote 20
+     * Trefferquote 40
+     * Trefferquote 60
+     * Und setzt die Informationen in der View
+     * @param user
+     */
     private void fillStatistic(User user){
         List<Shot> shots = userDbHelper.getShots(user);
         Double countOfAllShots = Double.valueOf(userDbHelper.getShots(user).size());
@@ -132,6 +139,10 @@ public class UserStatisticActivity extends AppCompatActivity {
         statisticSixty.setText(percentageSixties);
     }
 
+    /**
+     * Holt sich Informationen des Users über mostFrequentShots
+     * Zeigt diese Informationen in einem BarChart an
+     */
     private void createBarChart() {
 
         List<FrequentShot> mostFrequentShots = userDbHelper.getMostFrequentShotsOfUser(userDbHelper.getUser(id));
@@ -153,7 +164,10 @@ public class UserStatisticActivity extends AppCompatActivity {
         barChart.setData(data);
     }
 
-    //UserCreate Dialog
+    /**
+     * Erstellen des Dialogs zum editieren des Users
+     * @return dialog
+     */
     public Dialog createDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -164,7 +178,6 @@ public class UserStatisticActivity extends AppCompatActivity {
         ((EditText) myView.findViewById(R.id.vorname)).setText(currentUser.getVorname());
         ((EditText) myView.findViewById(R.id.nachname)).setText(currentUser.getNachname());
         ((EditText) myView.findViewById(R.id.alias)).setText(currentUser.getAlias());
-
         return b.create();
     }
 

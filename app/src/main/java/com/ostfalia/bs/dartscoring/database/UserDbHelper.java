@@ -26,7 +26,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 15;
     public static final String DATABASE_NAME = "DartTracker.db";
 
-    //Definieren der Tabelle
+    //Strings für User-Tabelle
     public static abstract class TableUser implements BaseColumns {
         public static final String TABLE_NAME = "user";
         public static final String COLUMN_NAME_VORNAME = "vorname";
@@ -34,6 +34,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_ALIAS = "alias";
     }
 
+    //Strings für Wurf-Tabelle
     public static abstract class TableShot implements BaseColumns {
         public static final String TABLE_NAME = "shot";
         public static final String COLUMN_NAME_TIME = "time";
@@ -41,11 +42,13 @@ public class UserDbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_PLAYER = "playerid";
     }
 
-    //Definition von typischen Statements
+    //Definition von typischen Strings
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String SEMMICOLON = ";";
+
+    //SQL Queries
     private static final String SQL_CREATE_USER =
             "CREATE TABLE " + TableUser.TABLE_NAME + " (" +
                     TableUser._ID + " INTEGER PRIMARY KEY," +
@@ -53,8 +56,6 @@ public class UserDbHelper extends SQLiteOpenHelper {
                     TableUser.COLUMN_NAME_NACHNAME + TEXT_TYPE + COMMA_SEP +
                     TableUser.COLUMN_NAME_ALIAS + TEXT_TYPE +
                     " )";
-
-    //SQL Queries
     private static final String SQL_CREATE_STATISTIC =
             "CREATE TABLE " + TableShot.TABLE_NAME + " (" +
                     TableShot._ID + " INTEGER PRIMARY KEY," +
@@ -92,16 +93,25 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
     //---------------------------------- USER Transactions ----------------------------------------
 
+    /**
+     * Erstellt einen User und legt diesen in der DB an
+     * @param user
+     * @return rowId
+     */
     public long createUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TableUser.COLUMN_NAME_VORNAME,user.getVorname());
         values.put(TableUser.COLUMN_NAME_NACHNAME,user.getNachname());
         values.put(TableUser.COLUMN_NAME_ALIAS,user.getAlias());
-        long newRowId = db.insert(TableUser.TABLE_NAME, null, values);
-        return newRowId;
+        long rowId = db.insert(TableUser.TABLE_NAME, null, values);
+        return rowId;
     }
 
+    /**
+     * Verändert angegebenen User
+     * @param user
+     */
     public void updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -111,6 +121,10 @@ public class UserDbHelper extends SQLiteOpenHelper {
         db.update(TableUser.TABLE_NAME, values, "_id="+ user.getId(),null);
     }
 
+    /**
+     * Gibt eine Liste aller in der DB angelegten User zurück
+     * @return allUser
+     */
     public List<User> getAllUser(){
         List<User> allUser = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TableUser.TABLE_NAME;
@@ -132,6 +146,11 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return allUser;
     }
 
+    /**
+     * Gibt den User der angegebenen id zurück
+     * @param id
+     * @return user
+     */
     public User getUser(long id){
         User user = new User();
         String selectQuery = "SELECT * FROM " + TableUser.TABLE_NAME + " WHERE " + TableUser._ID + " = " + id;
@@ -151,13 +170,11 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
     //------------------------------------- Shot Transactions -------------------------------------------
 
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
+    /**
+     * Speichert alle Würfe der Liste für den angegebenen User
+     * @param scoreList
+     * @param userId
+     */
     public void saveScore(List<Integer> scoreList, long userId){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -169,6 +186,11 @@ public class UserDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Liefert alle Würfe des angegebenen users
+     * @param user
+     * @return shots
+     */
     public List<Shot> getShots(User user){
         List<Shot> shots = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TableShot.TABLE_NAME + " WHERE " + TableShot.COLUMN_NAME_PLAYER + " = " + user.getId();
@@ -187,6 +209,12 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return shots;
     }
 
+    /**
+     * Liefert die 9 am häufigsten geworfenen Felder der Dartscheibe
+     * des angegebenen Users
+     * @param user
+     * @return mostFrequentShots
+     */
     public List<FrequentShot> getMostFrequentShotsOfUser(User user){
         List<FrequentShot> mostFrequentShots = new ArrayList<>();
         String selectQuery = "SELECT " + TableShot.COLUMN_NAME_POINTS + ", COUNT(*) FROM " + TableShot.TABLE_NAME + " WHERE " + TableShot.COLUMN_NAME_PLAYER + " = " + user.getId() + " GROUP BY " + TableShot.COLUMN_NAME_POINTS + " ORDER BY COUNT(*) DESC";
@@ -199,16 +227,20 @@ public class UserDbHelper extends SQLiteOpenHelper {
             }while (c.moveToNext());
         }
         if (mostFrequentShots.size()>9){
-            List<FrequentShot> returnList = new ArrayList<>();
+            List<FrequentShot> nineMostFrequentShots = new ArrayList<>();
             for (int i = 0; i < 9 ; i++) {
-                returnList.add(mostFrequentShots.get(i));
+                nineMostFrequentShots.add(mostFrequentShots.get(i));
             }
-            return returnList;
+            return nineMostFrequentShots;
         }else {
             return mostFrequentShots;
         }
     }
 
+    /**
+     * Liefert die 9 am häufigsten geworfenen Felder der Dartscheibe aller User
+     * @return
+     */
     public List<FrequentShot> getMostFrequentShots(){
         List<FrequentShot> mostFrequentShots = new ArrayList<>();
         String selectQuery = "SELECT " + TableShot.COLUMN_NAME_POINTS + ", COUNT(*) FROM " + TableShot.TABLE_NAME + " GROUP BY " + TableShot.COLUMN_NAME_POINTS + " ORDER BY COUNT(*) DESC";
@@ -231,6 +263,18 @@ public class UserDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    // ---------------------- Hilfsmethoden -------------------------------------
+
+    /**
+     * liefert aktuelles Datum in gewünschtem Format für DB
+     * @return
+     */
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 
 
 

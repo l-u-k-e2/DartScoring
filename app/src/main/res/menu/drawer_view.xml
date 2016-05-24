@@ -7,8 +7,5 @@
         <item
             android:id="@+id/nav_messages"
             android:title="301" />
-        <item
-            android:id="@+id/nav_friends"
-            android:title="Cricket" />
     </group>
 </menu>

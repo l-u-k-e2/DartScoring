@@ -42,15 +42,19 @@ public class UserchoiceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //RecyclerView
+        //RecyclerView mit allen Usern
         rv = (RecyclerView) inflater.inflate(
                 R.layout.user_choice_list, container, false);
+        //Zugriff auf DB
         userDbHelper = new UserDbHelper(getActivity().getApplicationContext());
         updateList(userDbHelper.getAllUser());
-        setupRecyclerView(rv);
         return rv;
     }
 
+    /**
+     * Befüllt RecyclerView mit allen übergebenen Usern
+     * @param userList
+     */
     public void updateList(List<User> userList){
         this.userList = userList;
         setupRecyclerView(rv);
@@ -62,12 +66,6 @@ public class UserchoiceFragment extends Fragment {
 
     public void clearCheckedPlayers(){
         this.checkedUserIds.clear();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("Test","Tst");
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -178,4 +176,5 @@ public class UserchoiceFragment extends Fragment {
             return valuesUser.size();
         }
     }
+
 }

@@ -57,7 +57,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         //CancelButton
         Button cancel = (Button)getActivity().findViewById(R.id.cancel_score);
         cancel.setOnClickListener(this);
-        //CurrentScoreButton
+        //CurrentScoreButton -> Anzeigefeld der aktuell eingegebenen Score
         currentThrowTextButton = (Button) getActivity().findViewById(R.id.current_score_button);
         super.onActivityCreated(savedInstanceState);
         //ScoringGrid aufbauen
@@ -97,43 +97,41 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * startet ein neues Spiel
+     */
     public void startGame(){
             this.posOfAktuellerSpieler = 0;
             markCurrentUser();
     }
 
+    /**
+     * Speichert eingegeben Score bzw. cancelt die Eingabe
+     * @param view
+     */
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.score_ok_button){
+    public void onClick(View view) {
+        if (view.getId() == R.id.score_ok_button){
             reduceScore(currentThrowList);
             setNextPlayer();
             deleteScores();
-        }else if (v.getId() == R.id.cancel_score){
+        }else if (view.getId() == R.id.cancel_score){
             deleteScores();
         }
-
-
     }
 
+    /**
+     * löscht zuvor eingegebene Scores
+     */
     private void deleteScores() {
         throwScore = 0;
         currentThrowList.clear();
         currentThrowTextButton.setText(String.valueOf(throwScore));
     }
 
-
-    private TableRow getCurrentUserRow(){
-        for (int i=0; i < table.getChildCount(); i++){
-            TableRow row = (TableRow) table.getChildAt(i);
-            TextView tv = (TextView)row.getChildAt(0);
-            User user = (User)tv.getTag();
-            if (user.getId() == users.get(posOfAktuellerSpieler).getId()){
-                return row;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Setzt den nächsten Spieler als aktuellen Spieler
+     */
     private void setNextPlayer(){
         demarkCurrentUser();
         if (posOfAktuellerSpieler >= users.size()-1){
@@ -144,6 +142,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         markCurrentUser();
     }
 
+    /**
+     * markiert den User der aktuell am Zug ist
+     */
     private void markCurrentUser(){
         TableRow tr = getCurrentUserRow();
         if(tr != null) {
@@ -152,6 +153,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * löscht die Markierung des aktuellen Users
+     */
     private void demarkCurrentUser(){
         if(getCurrentUserRow() != null){
             TextView username = (TextView)getCurrentUserRow().getChildAt(0);
@@ -159,6 +163,11 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Reduziert die aktuelle Score des aktuellen Users
+     * Speichert Scores in der DB für aktuellen User
+     * @param throwScoreList
+     */
     private void reduceScore(List<Integer> throwScoreList){
         if(getCurrentUserRow() != null){
             TextView scoreTextView = (TextView)getCurrentUserRow().getChildAt(1);
@@ -178,12 +187,19 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * addiert übergebene score der currentThrowList
+     * @param score
+     */
     public void addScore(int score){
         currentThrowList.add(score);
         throwScore+=score;
         currentThrowTextButton.setText(String.valueOf(throwScore));
     }
 
+    /**
+     * Öffnet Dialog mit dem Gewinner des Spiels
+     */
     private void showWinner(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(users.get(posOfAktuellerSpieler).getVorname() + " hat gewonnen");
@@ -192,7 +208,10 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
-
+    /**
+     * Baut das Grid für die Eingabe der Scores auf
+     * Färbt 9 am häufigsten geworfenen Felder rot ein
+     */
     private void prepareStatisticalGrid() {
         List<FrequentShot> mostFrequentShots = userDbHelper.getMostFrequentShots();
         grid = (GridLayout)getActivity().findViewById(R.id.gridLayout);
@@ -217,5 +236,22 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
                 found = false;
             }
         }
+    }
+
+    /**
+     * Hilfsmethode:
+     * Liefert die Tabellenreihe des aktuellen Spielers
+     * @return row
+     */
+    private TableRow getCurrentUserRow(){
+        for (int i=0; i < table.getChildCount(); i++){
+            TableRow row = (TableRow) table.getChildAt(i);
+            TextView tv = (TextView)row.getChildAt(0);
+            User user = (User)tv.getTag();
+            if (user.getId() == users.get(posOfAktuellerSpieler).getId()){
+                return row;
+            }
+        }
+        return null;
     }
 }

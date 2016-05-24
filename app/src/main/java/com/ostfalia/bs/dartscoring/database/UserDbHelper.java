@@ -102,6 +102,15 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    public void updateUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TableUser.COLUMN_NAME_VORNAME,user.getVorname());
+        values.put(TableUser.COLUMN_NAME_NACHNAME,user.getNachname());
+        values.put(TableUser.COLUMN_NAME_ALIAS,user.getAlias());
+        db.update(TableUser.TABLE_NAME, values, "_id="+ user.getId(),null);
+    }
+
     public List<User> getAllUser(){
         List<User> allUser = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TableUser.TABLE_NAME;

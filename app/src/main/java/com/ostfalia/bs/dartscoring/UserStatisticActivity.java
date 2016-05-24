@@ -1,14 +1,21 @@
 package com.ostfalia.bs.dartscoring;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,11 +58,19 @@ public class UserStatisticActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra(EXTRA_NAME);
-        id = intent.getLongExtra(USER_ID,0l);
+        id = intent.getLongExtra(USER_ID, 0l);
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(username);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_detail);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createDialog().show();
+            }
+        });
 
     }
 
@@ -136,6 +151,21 @@ public class UserStatisticActivity extends AppCompatActivity {
 
         BarData data = new BarData(labels, dataSet);
         barChart.setData(data);
+    }
+
+    //UserCreate Dialog
+    public Dialog createDialog() {
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        b.setTitle("Benutzer ändern");
+        final View myView = inflater.inflate(R.layout.user_create, null);
+        b.setView(myView);
+        User currentUser = userDbHelper.getUser(id);
+        ((EditText) myView.findViewById(R.id.vorname)).setText(currentUser.getVorname());
+        ((EditText) myView.findViewById(R.id.nachname)).setText(currentUser.getNachname());
+        ((EditText) myView.findViewById(R.id.alias)).setText(currentUser.getAlias());
+
+        return b.create();
     }
 
 }

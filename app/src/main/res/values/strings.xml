@@ -16,5 +16,7 @@
     <string name="game_mode">Spielmodus</string>
     <string name="userchoice">Spielerauswahl</string>
     <string name="scoring">Spielzähler</string>
+    <string name="mandator_field">User wurde nicht angelegt! Vorname ist Pflichtfeld!</string>
+    <string name="mandator_field_update">User konnte nicht editiert werden! Vorname ist Pflichtfeld!</string>
 
 </resources>

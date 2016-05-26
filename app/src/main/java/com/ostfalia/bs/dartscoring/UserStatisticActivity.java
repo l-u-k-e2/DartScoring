@@ -200,11 +200,11 @@ public class UserStatisticActivity extends AppCompatActivity {
                 vorname = ((EditText) myView.findViewById(R.id.vorname));
                 nachname = ((EditText) myView.findViewById(R.id.nachname));
                 alias = ((EditText) myView.findViewById(R.id.alias));
-                if(!vorname.getText().toString().isEmpty()) {
-                    userDbHelper.updateUser(new User(id,vorname.getText().toString(), nachname.getText().toString(), alias.getText().toString()));
+                if (!vorname.getText().toString().isEmpty()) {
+                    userDbHelper.updateUser(new User(id, vorname.getText().toString(), nachname.getText().toString(), alias.getText().toString()));
                     updateStatisticInfo();
                 } else {
-                    Snackbar.make(findViewById(R.id.main_content), "User wurde nicht angelegt! Vorname ist Pflichtfeld!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.main_content), getResources().getString(R.string.mandator_field_update), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });

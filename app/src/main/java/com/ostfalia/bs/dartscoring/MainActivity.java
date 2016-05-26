@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     userchoiceFragment.updateList(userDbHelper.getAllUser());
                     userchoiceFragment.clearCheckedPlayers();
                 } else {
-                    Snackbar.make(findViewById(R.id.main_content), "User wurde nicht angelegt! Vorname ist Pflichtfeld!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.main_content), getResources().getString(R.string.mandator_field), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });

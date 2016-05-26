@@ -3,12 +3,18 @@
     <string name="heading_player_text">Spieler</string>
     <string name="heading_points_text">Punkte</string>
     <string name="button_ok">ok</string>
-    <string name="cheese_ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
-        cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian
-        bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber
-        cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese
-        the big cheese.
-    </string>
-    <string name="checkin">Checkin</string>
     <string name="menu_settings">Settings</string>
+    <string name="sixty_chance">60 Trefferquote:</string>
+    <string name="fourty_chance">40 Trefferquote:</string>
+    <string name="twenty_chance">20 Trefferquote:</string>
+    <string name="statistic">Statistik</string>
+    <string name="info">Info</string>
+    <string name="firstname">Vorname:</string>
+    <string name="secondname">Nachname:</string>
+    <string name="alias">Alias:</string>
+    <string name="count_strikes">Anzahl Treffer:</string>
+    <string name="game_mode">Spielmodus</string>
+    <string name="userchoice">Spielerauswahl</string>
+    <string name="scoring">Spielzähler</string>
+
 </resources>

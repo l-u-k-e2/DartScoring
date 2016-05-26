@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(userchoiceFragment, "UserChoice");
-        adapter.addFragment(scoringFragment, "Scoring");
+        adapter.addFragment(userchoiceFragment, getResources().getString(R.string.userchoice));
+        adapter.addFragment(scoringFragment, getResources().getString(R.string.scoring));
         viewPager.setAdapter(adapter);
     }
 

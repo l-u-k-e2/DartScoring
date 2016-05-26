@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 //Update UserChoiceFragment
                 scoringFragment.updateUserTable(userchoiceFragment.getCheckedPlayers());
+//                userchoiceFragment.getCheckedPlayers().clear();
             }
             @Override
             public void onPageScrollStateChanged(int state) {}

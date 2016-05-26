@@ -253,6 +253,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
     /**
      * Hilfsmethode:
      * Liefert die Tabellenreihe des aktuellen Spielers

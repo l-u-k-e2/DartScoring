@@ -47,7 +47,7 @@ public class UserchoiceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateList(userDbHelper.getAllUser());
-        checkedUserIds.clear();
+        clearCheckedPlayers();
     }
 
     /**

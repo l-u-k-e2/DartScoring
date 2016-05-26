@@ -134,6 +134,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         throwScore = 0;
         currentThrowList.clear();
         currentThrowTextButton.setText(String.valueOf(throwScore));
+        for (int i = 0; i < grid.getChildCount(); i++) {
+            ((ScoringButton)grid.getChildAt(i)).setEnabled(true);
+        }
     }
 
     /**
@@ -202,6 +205,11 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         currentThrowList.add(score);
         throwScore+=score;
         currentThrowTextButton.setText(String.valueOf(throwScore));
+        if (currentThrowList.size() == 3){
+            for (int i = 0; i < grid.getChildCount(); i++) {
+                ((ScoringButton)grid.getChildAt(i)).setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -229,7 +237,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
             scoringButton.setColumnSpec();
         }
         boolean found = false;
-        for (int i = 1; i < 61 ; i++) {
+        for (int i = 0; i < 61 ; i++) {
             for (int j = 0; j < mostFrequentShots.size(); j++) {
                 if (i == mostFrequentShots.get(j).getPunkte()){
                     found = true;

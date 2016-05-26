@@ -7,11 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
-
 import com.ostfalia.bs.dartscoring.model.FrequentShot;
 import com.ostfalia.bs.dartscoring.model.Shot;
 import com.ostfalia.bs.dartscoring.model.User;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,21 +102,24 @@ public class UserDbHelper extends SQLiteOpenHelper {
         values.put(TableUser.COLUMN_NAME_VORNAME,user.getVorname());
         values.put(TableUser.COLUMN_NAME_NACHNAME,user.getNachname());
         values.put(TableUser.COLUMN_NAME_ALIAS,user.getAlias());
-        long rowId = db.insert(TableUser.TABLE_NAME, null, values);
-        return rowId;
+        return db.insert(TableUser.TABLE_NAME, null, values);
     }
 
     /**
      * Verändert angegebenen User
      * @param user
+     * @return Anzahl veränderter Datensätze
      */
-    public void updateUser(User user){
+    public int updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TableUser.COLUMN_NAME_VORNAME,user.getVorname());
         values.put(TableUser.COLUMN_NAME_NACHNAME,user.getNachname());
         values.put(TableUser.COLUMN_NAME_ALIAS,user.getAlias());
-        db.update(TableUser.TABLE_NAME, values, "_id="+ user.getId(),null);
+        String where = "_id=?";
+        String[] whereArgs = new String[] {String.valueOf(Long.toString(user.getId()))};
+        int returnint = db.update(TableUser.TABLE_NAME, values, where, whereArgs);
+        return returnint;
     }
 
     /**
@@ -138,11 +139,11 @@ public class UserDbHelper extends SQLiteOpenHelper {
                 User user = new User();
                 user.setId(c.getInt((c.getColumnIndex(TableUser._ID))));
                 user.setVorname(c.getString(c.getColumnIndex(TableUser.COLUMN_NAME_VORNAME)));
-
+                user.setNachname(c.getString(c.getColumnIndex(TableUser.COLUMN_NAME_NACHNAME)));
+                user.setAlias(c.getString(c.getColumnIndex(TableUser.COLUMN_NAME_ALIAS)));
                 allUser.add(user);
             }while (c.moveToNext());
         }
-
         return allUser;
     }
 
@@ -182,7 +183,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
             values.put(TableShot.COLUMN_NAME_TIME,getDateTime());
             values.put(TableShot.COLUMN_NAME_POINTS, scoreList.get(i));
             values.put(TableShot.COLUMN_NAME_PLAYER, userId);
-            long newRowId = db.insert(TableShot.TABLE_NAME, null, values);
+            db.insert(TableShot.TABLE_NAME, null, values);
         }
     }
 

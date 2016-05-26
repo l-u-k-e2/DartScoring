@@ -64,6 +64,10 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
         prepareStatisticalGrid();
     }
 
+    /**
+     * Erstellt eine Tabelle mit Spielern die vorher gecheckt wurden
+     * @param checkedUserIds
+     */
     public void updateUserTable(List<Long> checkedUserIds){
         if(table != null){
             table.removeAllViews();

@@ -10,22 +10,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.ostfalia.bs.dartscoring.database.UserDbHelper;
 import com.ostfalia.bs.dartscoring.model.FrequentShot;
 import com.ostfalia.bs.dartscoring.model.Shot;
@@ -48,11 +42,12 @@ public class UserStatisticActivity extends AppCompatActivity {
     private TextView statisticFourty;
     private TextView statisticSixty;
     private BarChart barChart;
+    private static android.app.Dialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.statistic_detail);
         //Zugriff auf DB
         userDbHelper = new UserDbHelper(getApplicationContext());
         //Zugriff auf Daten, die beim Click dem Intent übergeben wurden
@@ -68,7 +63,8 @@ public class UserStatisticActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createDialog().show();
+                dialog = createDialog();
+                dialog.show();
             }
         });
     }
@@ -81,12 +77,7 @@ public class UserStatisticActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         //StatistikInfo
-        TextView tVvorname = (TextView) findViewById(R.id.textView10);
-        tVvorname.setText(userDbHelper.getUser(id).getVorname());
-        TextView tVnachname = (TextView) findViewById(R.id.textView11);
-        tVnachname.setText(userDbHelper.getUser(id).getNachname());
-        TextView tValias = (TextView) findViewById(R.id.textView12);
-        tValias.setText(userDbHelper.getUser(id).getAlias());
+        updateStatisticInfo();
         //Statistik
         statisticTwenty = (TextView)findViewById(R.id.text_statistic_20);
         statisticFourty = (TextView)findViewById(R.id.text_statistic_40);
@@ -96,6 +87,18 @@ public class UserStatisticActivity extends AppCompatActivity {
         //BarChart
         barChart = (BarChart)findViewById(R.id.chart);
         createBarChart();
+    }
+
+    /**
+     * setzt Vorname, Nachname und Alias
+     */
+    private void updateStatisticInfo() {
+        TextView tVvorname = (TextView) findViewById(R.id.textView10);
+        tVvorname.setText(userDbHelper.getUser(id).getVorname());
+        TextView tVnachname = (TextView) findViewById(R.id.textView11);
+        tVnachname.setText(userDbHelper.getUser(id).getNachname());
+        TextView tValias = (TextView) findViewById(R.id.textView12);
+        tValias.setText(userDbHelper.getUser(id).getAlias());
     }
 
     @Override
@@ -178,6 +181,27 @@ public class UserStatisticActivity extends AppCompatActivity {
         ((EditText) myView.findViewById(R.id.vorname)).setText(currentUser.getVorname());
         ((EditText) myView.findViewById(R.id.nachname)).setText(currentUser.getNachname());
         ((EditText) myView.findViewById(R.id.alias)).setText(currentUser.getAlias());
+        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText vorname, nachname, alias;
+                vorname = ((EditText) myView.findViewById(R.id.vorname));
+                nachname = ((EditText) myView.findViewById(R.id.nachname));
+                alias = ((EditText) myView.findViewById(R.id.alias));
+                if(!vorname.getText().toString().isEmpty()) {
+                    userDbHelper.updateUser(new User(id,vorname.getText().toString(), nachname.getText().toString(), alias.getText().toString()));
+                    updateStatisticInfo();
+                } else {
+                    Snackbar.make(findViewById(R.id.main_content), "User wurde nicht angelegt! Vorname ist Pflichtfeld!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+            }
+        });
+        b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
         return b.create();
     }
 

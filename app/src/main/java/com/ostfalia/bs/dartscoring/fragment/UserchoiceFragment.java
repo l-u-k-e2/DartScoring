@@ -41,6 +41,15 @@ public class UserchoiceFragment extends Fragment {
     }
 
     /**
+     * Aufruf wenn zur Aktivität zurückgekehrt wird
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateList(userDbHelper.getAllUser());
+    }
+
+    /**
      * Befüllt RecyclerView mit allen übergebenen Usern
      * @param userList
      */

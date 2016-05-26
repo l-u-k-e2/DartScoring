@@ -97,9 +97,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
                     tableRow.addView(score);
                     //Row der Table hinzufügen
                     table.addView(tableRow);
-                    //ersten Spieler markieren
-                    startGame();
                 }
+                //ersten Spieler markieren
+                startGame();
             }
         }
     }
@@ -273,5 +273,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
 
     public void setSpielmodus(String spielmodus) {
         this.spielmodus = spielmodus;
+    }
+
+    public void clearUsers(){
+        users.clear();
     }
 }

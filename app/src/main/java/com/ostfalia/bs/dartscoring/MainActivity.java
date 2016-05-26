@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
+                        scoringFragment.setSpielmodus(menuItem.getTitle().toString());
                         drawerLayout.closeDrawers();
                         return true;
                     }

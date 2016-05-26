@@ -4,6 +4,7 @@ package com.ostfalia.bs.dartscoring.fragment;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +39,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
     private List<Integer> currentThrowList = new ArrayList<>();
     private Button currentThrowTextButton;
     private int throwScore = 0;
+    private String spielmodus = "501";
 
     @Nullable
     @Override
@@ -65,6 +67,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
+     * Wird beim schwenken auf dieses Fragment ausgeführt
      * Erstellt eine Tabelle mit Spielern die vorher gecheckt wurden
      * @param checkedUserIds
      */
@@ -89,7 +92,7 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
                     tableRow.addView(playerName);
                     //Punktzahl der Row hinzufügen
                     TextView score = new TextView(getActivity());
-                    score.setText("501");
+                    score.setText(spielmodus);
                     score.setTextSize(30);
                     tableRow.addView(score);
                     //Row der Table hinzufügen
@@ -257,5 +260,9 @@ public class ScoringFragment extends Fragment implements View.OnClickListener {
             }
         }
         return null;
+    }
+
+    public void setSpielmodus(String spielmodus) {
+        this.spielmodus = spielmodus;
     }
 }

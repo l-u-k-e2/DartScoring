@@ -100,7 +100,8 @@
                 android:gravity="center"
                 android:layout_gravity="fill_horizontal"
                 android:id="@+id/cancel_score"
-                android:textSize="30dp" />
+                android:textSize="30dp"
+                />
 
             <Button
                 android:layout_columnWeight="1"

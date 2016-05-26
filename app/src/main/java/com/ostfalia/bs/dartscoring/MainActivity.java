@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public Dialog createDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        b.setTitle("Benutzer erstellen");
+        b.setTitle(getResources().getString(R.string.create_user));
         b.setView(inflater.inflate(R.layout.user_create, null));
         b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

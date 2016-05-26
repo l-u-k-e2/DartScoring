@@ -186,7 +186,7 @@ public class UserStatisticActivity extends AppCompatActivity {
     public Dialog createDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        b.setTitle("Benutzer ändern");
+        b.setTitle(getResources().getString(R.string.update_user));
         final View myView = inflater.inflate(R.layout.user_create, null);
         b.setView(myView);
         User currentUser = userDbHelper.getUser(id);

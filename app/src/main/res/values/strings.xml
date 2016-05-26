@@ -18,5 +18,7 @@
     <string name="scoring">Spielzähler</string>
     <string name="mandator_field">User wurde nicht angelegt! Vorname ist Pflichtfeld!</string>
     <string name="mandator_field_update">User konnte nicht editiert werden! Vorname ist Pflichtfeld!</string>
+    <string name="create_user">Benutzer erstellen</string>
+    <string name="update_user">Benutzer editieren</string>
 
 </resources>

@@ -1,5 +1,9 @@
 package com.ostfalia.bs.dartscoring.model;
 
+import com.ostfalia.bs.dartscoring.R;
+
+import java.util.Random;
+
 /**
  * Created by Lukas on 15.04.2016.
  */
@@ -9,6 +13,7 @@ public class User {
     private String vorname;
     private String nachname;
     private String alias;
+    private static final Random RANDOM = new Random();
 
     public User(){}
 
@@ -23,6 +28,34 @@ public class User {
         this.vorname = vorname;
         this.nachname = nachname;
         this.alias = alias;
+    }
+
+    public static int getDartProDrawable(int id){
+        switch (id){
+            default:
+            case 0:
+                return R.drawable.dart_spieler1;
+            case 1:
+                return R.drawable.dart_spieler2;
+            case 2:
+                return R.drawable.dart_spieler3;
+            case 3:
+                return R.drawable.dart_spieler4;
+        }
+    }
+
+    public static int getDartProPanoramaDrawable(int id){
+        switch (id){
+            default:
+            case 0:
+                return R.drawable.dart_spieler1_panorama;
+            case 1:
+                return R.drawable.dart_spieler2_panorama;
+            case 2:
+                return R.drawable.dart_spieler3_panorama;
+            case 3:
+                return R.drawable.dart_spieler4_panorama;
+        }
     }
 
     public String getVorname() {

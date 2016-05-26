@@ -14,6 +14,7 @@ import com.ostfalia.bs.dartscoring.R;
 import com.ostfalia.bs.dartscoring.UserStatisticActivity;
 import com.ostfalia.bs.dartscoring.model.User;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by lukas on 24.05.2016.
@@ -71,8 +72,10 @@ public class SimpleStringRecyclerViewAdapter extends RecyclerView.Adapter<ViewHo
             }
         });
         //Bild vor Namen setzen
+        Random random = new Random();
+        final int randomInt = random.nextInt(4);
         Glide.with(holder.mImageView.getContext())
-                .load(R.drawable.dart_board)
+                .load(User.getDartProDrawable(randomInt))
                 .fitCenter()
                 .into(holder.mImageView);
 
@@ -84,6 +87,7 @@ public class SimpleStringRecyclerViewAdapter extends RecyclerView.Adapter<ViewHo
                 Intent intent = new Intent(context, UserStatisticActivity.class);
                 intent.putExtra(UserStatisticActivity.EXTRA_NAME, holder.mBoundString);
                 intent.putExtra(UserStatisticActivity.USER_ID, holder.mBoundID);
+                intent.putExtra(UserStatisticActivity.DRAWABLE_ID, randomInt);
 
                 context.startActivity(intent);
             }

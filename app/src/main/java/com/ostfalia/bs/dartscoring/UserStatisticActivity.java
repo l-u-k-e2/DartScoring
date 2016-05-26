@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -35,9 +37,11 @@ public class UserStatisticActivity extends AppCompatActivity {
 
     public static final String EXTRA_NAME = "spieler_name";
     public static final String USER_ID = "spieler_id";
+    public static final String DRAWABLE_ID = "drawable_id";
     private UserDbHelper userDbHelper;
     private String username;
     private long id;
+    private int drawableId;
     private TextView statisticTwenty;
     private TextView statisticFourty;
     private TextView statisticSixty;
@@ -48,16 +52,18 @@ public class UserStatisticActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistic_detail);
-        //Zugriff auf DB
-        userDbHelper = new UserDbHelper(getApplicationContext());
         //Zugriff auf Daten, die beim Click dem Intent übergeben wurden
         Intent intent = getIntent();
         username = intent.getStringExtra(EXTRA_NAME);
         id = intent.getLongExtra(USER_ID, 0l);
+        drawableId = intent.getIntExtra(DRAWABLE_ID, 0);
         //ToolbarLayout
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(username);
+        loadBackdrop();
+        //Zugriff auf DB
+        userDbHelper = new UserDbHelper(getApplicationContext());
         //FAB für editieren des Users
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_detail);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +73,11 @@ public class UserStatisticActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
+
+    private void loadBackdrop() {
+        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+        Glide.with(this).load(User.getDartProPanoramaDrawable(drawableId)).centerCrop().into(imageView);
     }
 
     /**
@@ -93,6 +104,7 @@ public class UserStatisticActivity extends AppCompatActivity {
      * setzt Vorname, Nachname und Alias
      */
     private void updateStatisticInfo() {
+
         TextView tVvorname = (TextView) findViewById(R.id.textView10);
         tVvorname.setText(userDbHelper.getUser(id).getVorname());
         TextView tVnachname = (TextView) findViewById(R.id.textView11);
